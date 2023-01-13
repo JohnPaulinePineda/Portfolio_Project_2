@@ -1,0 +1,1044 @@
+---
+title: 'R : Data Quality Assessment, Preprocessing and Exploration for a Regression   Modelling Problem'
+author: "John Pauline Pineda"
+date: "April 15, 2022"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    theme: readable
+    highlight: tango
+    css: doc.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=15, fig.height=10)
+```
+# **1. Table of Contents**
+|
+| This document presents a non-exhaustive list of various data quality assessment, preprocessing and exploration methods for a regression modelling problem using various helpful packages in <mark style="background-color: #CCECFF">**R**</mark>.    
+|
+##  1.1 Sample Data
+|
+| The <mark style="background-color: #EEEEEE;color: #FF0000">**ChemicalManufacturingProcess**</mark>  dataset from the  <mark style="background-color: #CCECFF">**AppliedPredictiveModeling**</mark> package was used for this illustrated example.
+|
+| Preliminary dataset assessment:
+|
+| **[A]** 176 rows (observations)
+|
+| **[B]** 58 columns (variables)
+|      **[B.1]** 1/58 response = <span style="color: #FF0000">Yield</span> variable (numeric)
+|      **[B.2]** 57/58 predictors = All remaining variables (57/57 numeric)
+|     
+|
+```{r section_1.1, warning=FALSE, message=FALSE}
+##################################
+# Loading R libraries
+##################################
+library(AppliedPredictiveModeling)
+library(caret)
+library(moments)
+library(skimr)
+library(dplyr)
+library(RANN)
+library(corrplot)
+library(lares)
+library(DMwR)
+
+##################################
+# Loading dataset
+##################################
+data(ChemicalManufacturingProcess)
+
+##################################
+# Performing a general exploration of the dataset
+##################################
+dim(ChemicalManufacturingProcess)
+str(ChemicalManufacturingProcess)
+summary(ChemicalManufacturingProcess)
+
+##################################
+# Formulating a data type assessment summary
+##################################
+PDA <- ChemicalManufacturingProcess
+(PDA.Summary <- data.frame(
+  Column.Index=c(1:length(names(PDA))),
+  Column.Name= names(PDA), 
+  Column.Type=sapply(PDA, function(x) class(x)), 
+  row.names=NULL)
+)
+```
+
+##  1.2 Data Quality Assessment
+|
+| Data quality assessment:
+|
+| **[A]** Missing observations noted for 28 variables with NA.Count>0 and Fill.Rate<1.0.
+|      **[A.1]** <span style="color: #FF0000">ManufacturingProcess01</span> variable (numeric)
+|      **[A.2]** <span style="color: #FF0000">ManufacturingProcess02</span> variable (numeric)
+|      **[A.3]** <span style="color: #FF0000">ManufacturingProcess03</span> variable (numeric)
+|      **[A.4]** <span style="color: #FF0000">ManufacturingProcess04</span> variable (numeric)
+|      **[A.5]** <span style="color: #FF0000">ManufacturingProcess05</span> variable (numeric)
+|      **[A.6]** <span style="color: #FF0000">ManufacturingProcess06</span> variable (numeric)
+|      **[A.7]** <span style="color: #FF0000">ManufacturingProcess07</span> variable (numeric)
+|      **[A.8]** <span style="color: #FF0000">ManufacturingProcess08</span> variable (numeric)
+|      **[A.9]** <span style="color: #FF0000">ManufacturingProcess10</span> variable (numeric)
+|      **[A.10]** <span style="color: #FF0000">ManufacturingProcess11</span> variable (numeric)
+|      **[A.11]** <span style="color: #FF0000">ManufacturingProcess12</span> variable (numeric)
+|      **[A.12]** <span style="color: #FF0000">ManufacturingProcess14</span> variable (numeric)
+|      **[A.13]** <span style="color: #FF0000">ManufacturingProcess22</span> variable (numeric)
+|      **[A.14]** <span style="color: #FF0000">ManufacturingProcess23</span> variable (numeric)
+|      **[A.15]** <span style="color: #FF0000">ManufacturingProcess24</span> variable (numeric)
+|      **[A.16]** <span style="color: #FF0000">ManufacturingProcess25</span> variable (numeric)
+|      **[A.17]** <span style="color: #FF0000">ManufacturingProcess26</span> variable (numeric)
+|      **[A.18]** <span style="color: #FF0000">ManufacturingProcess27</span> variable (numeric)
+|      **[A.19]** <span style="color: #FF0000">ManufacturingProcess28</span> variable (numeric)
+|      **[A.20]** <span style="color: #FF0000">ManufacturingProcess29</span> variable (numeric)
+|      **[A.21]** <span style="color: #FF0000">ManufacturingProcess30</span> variable (numeric)
+|      **[A.22]** <span style="color: #FF0000">ManufacturingProcess31</span> variable (numeric)
+|      **[A.23]** <span style="color: #FF0000">ManufacturingProcess33</span> variable (numeric)
+|      **[A.24]** <span style="color: #FF0000">ManufacturingProcess34</span> variable (numeric)
+|      **[A.25]** <span style="color: #FF0000">ManufacturingProcess35</span> variable (numeric)
+|      **[A.26]** <span style="color: #FF0000">ManufacturingProcess36</span> variable (numeric)
+|      **[A.27]** <span style="color: #FF0000">ManufacturingProcess40</span> variable (numeric)
+|      **[A.28]** <span style="color: #FF0000">ManufacturingProcess41</span> variable (numeric)
+|
+| **[B]** Low variance observed for 3 variables with First.Second.Mode.Ratio>5.
+|      **[B.1]** <span style="color: #FF0000">BiologicalMaterial07</span> variable (numeric)
+|      **[B.2]** <span style="color: #FF0000">ManufacturingProcess28</span> variable (numeric)
+|      **[B.3]** <span style="color: #FF0000">ManufacturingProcess41</span> variable (numeric)
+|
+| **[C]** High skewness observed for 17 variables with Skewness>3 or Skewness<(-3).
+|      **[C.1]** <span style="color: #FF0000">BiologicalMaterial07</span> variable (numeric)
+|      **[C.2]** <span style="color: #FF0000">ManufacturingProcess01</span> variable (numeric)
+|      **[C.3]** <span style="color: #FF0000">ManufacturingProcess06</span> variable (numeric)
+|      **[C.4]** <span style="color: #FF0000">ManufacturingProcess16</span> variable (numeric)
+|      **[C.5]** <span style="color: #FF0000">ManufacturingProcess18</span> variable (numeric)
+|      **[C.6]** <span style="color: #FF0000">ManufacturingProcess20</span> variable (numeric)
+|      **[C.7]** <span style="color: #FF0000">ManufacturingProcess25</span> variable (numeric)
+|      **[C.8]** <span style="color: #FF0000">ManufacturingProcess26</span> variable (numeric)
+|      **[C.9]** <span style="color: #FF0000">ManufacturingProcess27</span> variable (numeric)
+|      **[C.10]** <span style="color: #FF0000">ManufacturingProcess29</span> variable (numeric)
+|      **[C.11]** <span style="color: #FF0000">ManufacturingProcess30</span> variable (numeric)
+|      **[C.12]** <span style="color: #FF0000">ManufacturingProcess31</span> variable (numeric)
+|      **[C.14]** <span style="color: #FF0000">ManufacturingProcess39</span> variable (numeric)
+|      **[C.15]** <span style="color: #FF0000">ManufacturingProcess42</span> variable (numeric)
+|      **[C.16]** <span style="color: #FF0000">ManufacturingProcess43</span> variable (numeric)
+|      **[C.17]** <span style="color: #FF0000">ManufacturingProcess44</span> variable (numeric)
+|      **[C.18]** <span style="color: #FF0000">ManufacturingProcess45</span> variable (numeric)
+|
+```{r section_1.2, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DQA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DQA.Predictors <- DQA[,!names(DQA) %in% c("Yield")]
+
+##################################
+# Formulating an overall data quality assessment summary
+##################################
+(DQA.Summary <- data.frame(
+  Column.Index=c(1:length(names(DQA))),
+  Column.Name= names(DQA), 
+  Column.Type=sapply(DQA, function(x) class(x)), 
+  Row.Count=sapply(DQA, function(x) nrow(DQA)),
+  NA.Count=sapply(DQA,function(x)sum(is.na(x))),
+  Fill.Rate=sapply(DQA,function(x)format(round((sum(!is.na(x))/nrow(DQA)),3),nsmall=3)),
+  row.names=NULL)
+)
+
+##################################
+# Listing all numeric predictors
+##################################
+DQA.Predictors.Numeric <- DQA.Predictors[,sapply(DQA.Predictors, is.numeric)]
+
+if (length(names(DQA.Predictors.Numeric))>0) {
+    print(paste0("There are ",
+               (length(names(DQA.Predictors.Numeric))),
+               " numeric predictor variable(s)."))
+} else {
+  print("There are no numeric predictor variables.")
+}
+
+##################################
+# Listing all factor predictors
+##################################
+DQA.Predictors.Factor <- DQA.Predictors[,sapply(DQA.Predictors, is.factor)]
+
+if (length(names(DQA.Predictors.Factor))>0) {
+    print(paste0("There are ",
+               (length(names(DQA.Predictors.Factor))),
+               " factor predictor variable(s)."))
+} else {
+  print("There are no factor predictor variables.")
+}
+
+##################################
+# Formulating a data quality assessment summary for factor predictors
+##################################
+if (length(names(DQA.Predictors.Factor))>0) {
+  
+  ##################################
+  # Formulating a function to determine the first mode
+  ##################################
+  FirstModes <- function(x) {
+    ux <- unique(na.omit(x))
+    tab <- tabulate(match(x, ux))
+    ux[tab == max(tab)]
+  }
+
+  ##################################
+  # Formulating a function to determine the second mode
+  ##################################
+  SecondModes <- function(x) {
+    ux <- unique(na.omit(x))
+    tab <- tabulate(match(x, ux))
+    fm = ux[tab == max(tab)]
+    sm = x[!(x %in% fm)]
+    usm <- unique(sm)
+    tabsm <- tabulate(match(sm, usm))
+    usm[tabsm == max(tabsm)]
+  }
+  
+  (DQA.Predictors.Factor.Summary <- data.frame(
+  Column.Name= names(DQA.Predictors.Factor), 
+  Column.Type=sapply(DQA.Predictors.Factor, function(x) class(x)), 
+  Unique.Count=sapply(DQA.Predictors.Factor, function(x) length(unique(x))),
+  First.Mode.Value=sapply(DQA.Predictors.Factor, function(x) as.character(FirstModes(x)[1])),
+  Second.Mode.Value=sapply(DQA.Predictors.Factor, function(x) as.character(SecondModes(x)[1])),
+  First.Mode.Count=sapply(DQA.Predictors.Factor, function(x) sum(na.omit(x) == FirstModes(x)[1])),
+  Second.Mode.Count=sapply(DQA.Predictors.Factor, function(x) sum(na.omit(x) == SecondModes(x)[1])),
+  Unique.Count.Ratio=sapply(DQA.Predictors.Factor, function(x) format(round((length(unique(x))/nrow(DQA.Predictors.Factor)),3), nsmall=3)),
+  First.Second.Mode.Ratio=sapply(DQA.Predictors.Factor, function(x) format(round((sum(x == FirstModes(x)[1])/sum(x == SecondModes(x)[1])),3), nsmall=3)),
+  row.names=NULL)
+  )
+  
+}
+
+##################################
+# Formulating a data quality assessment summary for numeric predictors
+##################################
+if (length(names(DQA.Predictors.Numeric))>0) {
+  
+  ##################################
+  # Formulating a function to determine the first mode
+  ##################################
+  FirstModes <- function(x) {
+    ux <- unique(na.omit(x))
+    tab <- tabulate(match(x, ux))
+    ux[tab == max(tab)]
+  }
+
+  ##################################
+  # Formulating a function to determine the second mode
+  ##################################
+  SecondModes <- function(x) {
+    ux <- unique(na.omit(x))
+    tab <- tabulate(match(x, ux))
+    fm = ux[tab == max(tab)]
+    sm = na.omit(x)[!(na.omit(x) %in% fm)]
+    usm <- unique(sm)
+    tabsm <- tabulate(match(sm, usm))
+    usm[tabsm == max(tabsm)]
+  }
+  
+  (DQA.Predictors.Numeric.Summary <- data.frame(
+  Column.Name= names(DQA.Predictors.Numeric), 
+  Column.Type=sapply(DQA.Predictors.Numeric, function(x) class(x)), 
+  Unique.Count=sapply(DQA.Predictors.Numeric, function(x) length(unique(x))),
+  Unique.Count.Ratio=sapply(DQA.Predictors.Numeric, function(x) format(round((length(unique(x))/nrow(DQA.Predictors.Numeric)),3), nsmall=3)),
+  First.Mode.Value=sapply(DQA.Predictors.Numeric, function(x) format(round((FirstModes(x)[1]),3),nsmall=3)),
+  Second.Mode.Value=sapply(DQA.Predictors.Numeric, function(x) format(round((SecondModes(x)[1]),3),nsmall=3)),
+  First.Mode.Count=sapply(DQA.Predictors.Numeric, function(x) sum(na.omit(x) == FirstModes(x)[1])),
+  Second.Mode.Count=sapply(DQA.Predictors.Numeric, function(x) sum(na.omit(x) == SecondModes(x)[1])),
+  First.Second.Mode.Ratio=sapply(DQA.Predictors.Numeric, function(x) format(round((sum(na.omit(x) == FirstModes(x)[1])/sum(na.omit(x) == SecondModes(x)[1])),3), nsmall=3)),
+  Minimum=sapply(DQA.Predictors.Numeric, function(x) format(round(min(x,na.rm = TRUE),3), nsmall=3)),
+  Mean=sapply(DQA.Predictors.Numeric, function(x) format(round(mean(x,na.rm = TRUE),3), nsmall=3)),
+  Median=sapply(DQA.Predictors.Numeric, function(x) format(round(median(x,na.rm = TRUE),3), nsmall=3)),
+  Maximum=sapply(DQA.Predictors.Numeric, function(x) format(round(max(x,na.rm = TRUE),3), nsmall=3)),
+  Skewness=sapply(DQA.Predictors.Numeric, function(x) format(round(skewness(x,na.rm = TRUE),3), nsmall=3)),
+  Kurtosis=sapply(DQA.Predictors.Numeric, function(x) format(round(kurtosis(x,na.rm = TRUE),3), nsmall=3)),
+  Percentile25th=sapply(DQA.Predictors.Numeric, function(x) format(round(quantile(x,probs=0.25,na.rm = TRUE),3), nsmall=3)),
+  Percentile75th=sapply(DQA.Predictors.Numeric, function(x) format(round(quantile(x,probs=0.75,na.rm = TRUE),3), nsmall=3)),
+  row.names=NULL)
+  )  
+  
+}
+
+##################################
+# Identifying potential data quality issues
+##################################
+
+##################################
+# Checking for missing observations
+##################################
+if ((nrow(DQA.Summary[DQA.Summary$NA.Count>0,]))>0){
+  print(paste0("Missing observations noted for ",
+               (nrow(DQA.Summary[DQA.Summary$NA.Count>0,])),
+               " variable(s) with NA.Count>0 and Fill.Rate<1.0."))
+  DQA.Summary[DQA.Summary$NA.Count>0,]
+} else {
+  print("No missing observations noted.")
+}
+
+##################################
+# Checking for zero or near-zero variance predictors
+##################################
+if (length(names(DQA.Predictors.Factor))==0) {
+  print("No factor predictors noted.")
+} else if (nrow(DQA.Predictors.Factor.Summary[as.numeric(as.character(DQA.Predictors.Factor.Summary$First.Second.Mode.Ratio))>5,])>0){
+  print(paste0("Low variance observed for ",
+               (nrow(DQA.Predictors.Factor.Summary[as.numeric(as.character(DQA.Predictors.Factor.Summary$First.Second.Mode.Ratio))>5,])),
+               " factor variable(s) with First.Second.Mode.Ratio>5."))
+  DQA.Predictors.Factor.Summary[as.numeric(as.character(DQA.Predictors.Factor.Summary$First.Second.Mode.Ratio))>5,]
+} else {
+  print("No low variance factor predictors due to high first-second mode ratio noted.")
+}
+
+if (length(names(DQA.Predictors.Numeric))==0) {
+  print("No numeric predictors noted.")
+} else if (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$First.Second.Mode.Ratio))>5,])>0){
+  print(paste0("Low variance observed for ",
+               (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$First.Second.Mode.Ratio))>5,])),
+               " numeric variable(s) with First.Second.Mode.Ratio>5."))
+  DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$First.Second.Mode.Ratio))>5,]
+} else {
+  print("No low variance numeric predictors due to high first-second mode ratio noted.")
+}
+
+if (length(names(DQA.Predictors.Numeric))==0) {
+  print("No numeric predictors noted.")
+} else if (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Unique.Count.Ratio))<0.01,])>0){
+  print(paste0("Low variance observed for ",
+               (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Unique.Count.Ratio))<0.01,])),
+               " numeric variable(s) with Unique.Count.Ratio<0.01."))
+  DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Unique.Count.Ratio))<0.01,]
+} else {
+  print("No low variance numeric predictors due to low unique count ratio noted.")
+}
+
+##################################
+# Checking for skewed predictors
+##################################
+if (length(names(DQA.Predictors.Numeric))==0) {
+  print("No numeric predictors noted.")
+} else if (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))>3 |
+                                               as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))<(-3),])>0){
+  print(paste0("High skewness observed for ",
+  (nrow(DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))>3 |
+                                               as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))<(-3),])),
+  " numeric variable(s) with Skewness>3 or Skewness<(-3)."))
+  DQA.Predictors.Numeric.Summary[as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))>3 |
+                                 as.numeric(as.character(DQA.Predictors.Numeric.Summary$Skewness))<(-3),]
+} else {
+  print("No skewed numeric predictors noted.")
+}
+
+```
+
+##  1.3 Data Preprocessing
+
+### 1.3.1 Missing Data Imputation
+|
+| Missing data assessment:
+|
+| **[A]** Missing observations noted for 28 variables from the previous data quality assessment.
+|
+| **[B]** Missing observations noted for 28 variables confirmed using a descriptive statistics summary from the <mark style="background-color: #CCECFF">**skimr**</mark> package.
+|
+| **[C]** The <mark style="background-color: #CCECFF">**caret**</mark> package allows three imputation methods:
+|      **[C.1]** The <span style="color: #0000FF">knnImpute</span> method is carried out by finding the k closest samples (Euclidian distance) in the training set.
+|      **[C.2]** The <span style="color: #0000FF">bagImpute</span> method fits a bagged tree model for each predictor (as a function of all the others).
+|      **[C.3]** The <span style="color: #0000FF">medianImpute</span> method takes the median of each predictor in the training set, and uses them to fill missing values.
+|
+| **[D]** The <span style="color: #0000FF">knnImpute</span>, <span style="color: #0000FF">bagImpute</span> and <span style="color: #0000FF">medianImpute</span> methods were applied on the dataset: 
+|      **[D.1]** Imputation was performed using a KNN (K=5) model developed from 152 observations (complete information) and  58 variables (automatic centering and scaling applied).
+|      **[D.2]** Imputation was performed using bagged trees model developed from 152 observations (complete information) and  58 variables (no centering and scaling applied).
+|      **[D.3]** Imputation was performed using the median determined for each individual variable (no centering and scaling applied).
+|
+```{r section_1.3.1, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_Skimmed <- skim(DPA))
+
+##################################
+# Identifying columns with missing data
+#################################
+DPA %>%
+skim() %>%
+dplyr::filter(n_missing > 0)
+
+##################################
+# Creating a KNN imputation model from the dataset
+#################################
+(DPA_KNNImputeModel <- preProcess(DPA, method='knnImpute'))
+DPA_KNNImputed <- predict(DPA_KNNImputeModel, newdata=DPA)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_KNNImputed_Skimmed <- skim(DPA_KNNImputed))
+
+##################################
+# Identifying columns with missing data
+#################################
+DPA_KNNImputed %>%
+skim() %>%
+dplyr::filter(n_missing > 0)
+
+##################################
+# Creating a Bagged Tree imputation model from the dataset
+#################################
+(DPA_BagImputeModel <- preProcess(DPA, method='bagImpute'))
+DPA_BagImputed <- predict(DPA_BagImputeModel, newdata=DPA)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_BagImputed_Skimmed <- skim(DPA_BagImputed))
+
+##################################
+# Identifying columns with missing data
+#################################
+DPA_BagImputed %>%
+skim() %>%
+dplyr::filter(n_missing > 0)
+
+##################################
+# Creating a Median imputation model from the dataset
+#################################
+(DPA_MedianImputeModel <- preProcess(DPA, method='medianImpute'))
+DPA_MedianImputed <- predict(DPA_MedianImputeModel, newdata=DPA)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_MedianImputed_Skimmed <- skim(DPA_MedianImputed))
+
+##################################
+# Identifying columns with missing data
+#################################
+DPA_MedianImputed %>%
+skim() %>%
+dplyr::filter(n_missing > 0)
+
+```
+
+### 1.3.2 Outlier Treatment
+|
+| Outlier data assessment:
+|
+| **[A]** Outliers noted for 48 variables. Outlier treatment for numerical stability remains optional depending on potential model requirements for the subsequent steps.
+|
+| **[B]** Numeric data can be visualized through a boxplot including observations classified as suspected outliers using the IQR criterion. The IQR criterion means that all observations above the (75th percentile + 1.5 x IQR) or below the (25th percentile - 1.5 x IQR) are suspected outliers, where IQR is the difference between the third quartile (75th percentile) and first quartile (25th percentile).
+|
+| **[C]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for outlier treatment:
+|      **[C.1]** The <span style="color: #0000FF">spatialSign</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package projects the data for a predictor to the unit circle in p dimensions by dividing it by its norm, where p is the number of predictors.
+|
+| **[D]** The <span style="color: #0000FF">spatialSign</span> methods was applied on the dataset: 
+|      **[D.1]** While data distribution generally improved with the number of remaining outliers reduced, there are still 40 variables noted with outliers using the IQR criterion.
+|
+```{r section_1.3.2, warning=FALSE, message=FALSE, fig.width=15, fig.height=3}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+
+##################################
+# Identifying outliers for the numeric predictors
+##################################
+OutlierCountList <- c()
+
+for (i in 1:ncol(DPA.Predictors.Numeric)) {
+  Outliers <- boxplot.stats(DPA.Predictors.Numeric[,i])$out
+  OutlierCount <- length(Outliers)
+  OutlierCountList <- append(OutlierCountList,OutlierCount)
+  OutlierIndices <- which(DPA.Predictors.Numeric[,i] %in% c(Outliers))
+  boxplot(DPA.Predictors.Numeric[,i], 
+          ylab = names(DPA.Predictors.Numeric)[i], 
+          main = names(DPA.Predictors.Numeric)[i],
+          horizontal=TRUE)
+  mtext(paste0(OutlierCount, " Outlier(s) Detected"))
+}
+
+OutlierCountSummary <- as.data.frame(cbind(names(DPA.Predictors.Numeric),(OutlierCountList)))
+names(OutlierCountSummary) <- c("NumericPredictors","OutlierCount")
+OutlierCountSummary$OutlierCount <- as.numeric(as.character(OutlierCountSummary$OutlierCount))
+NumericPredictorWithOutlierCount <- nrow(OutlierCountSummary[OutlierCountSummary$OutlierCount>0,])
+print(paste0(NumericPredictorWithOutlierCount, " numeric variable(s) were noted with outlier(s)." ))
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_Skimmed <- skim(DPA.Predictors.Numeric))
+
+##################################
+# Applying a center, scale and spatial sign data transformation
+##################################
+DPA_CenteredScaledSpatialSigned <- preProcess(DPA.Predictors.Numeric, method = c("center","scale","spatialSign"))
+DPA_CenteredScaledSpatialSignedTransformed <- predict(DPA_CenteredScaledSpatialSigned, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_CenteredScaledSpatialSignedTransformedSkimmed <- skim(DPA_CenteredScaledSpatialSignedTransformed))
+
+##################################
+# Identifying outliers for the numeric predictors
+##################################
+OutlierCountList <- c()
+
+for (i in 1:ncol(DPA.Predictors.Numeric)) {
+  Outliers <- boxplot.stats(DPA_CenteredScaledSpatialSignedTransformed[,i])$out
+  OutlierCount <- length(Outliers)
+  OutlierCountList <- append(OutlierCountList,OutlierCount)
+  OutlierIndices <- which(DPA.Predictors.Numeric[,i] %in% c(Outliers))
+  boxplot(DPA_CenteredScaledSpatialSignedTransformed[,i], 
+          ylab = names(DPA.Predictors.Numeric)[i], 
+          main = names(DPA.Predictors.Numeric)[i],
+          horizontal=TRUE)
+  mtext(paste0(OutlierCount, " Outlier(s) Detected"))
+}
+
+OutlierCountSummary <- as.data.frame(cbind(names(DPA.Predictors.Numeric),(OutlierCountList)))
+names(OutlierCountSummary) <- c("NumericPredictors","OutlierCount")
+OutlierCountSummary$OutlierCount <- as.numeric(as.character(OutlierCountSummary$OutlierCount))
+NumericPredictorWithOutlierCount <- nrow(OutlierCountSummary[OutlierCountSummary$OutlierCount>0,])
+print(paste0(NumericPredictorWithOutlierCount, " numeric variable(s) were noted with outlier(s)." ))
+
+```
+
+### 1.3.3 Zero and Near-Zero Variance
+|
+| Zero and near-zero variance data assessment:
+|
+| **[A]** Low variance noted for 3 variables from the previous data quality assessment.
+|
+| **[B]** Low variance noted for 6 variables confirmed using a preprocessing summary from the <mark style="background-color: #CCECFF">**caret**</mark> package.
+|
+| **[C]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes two methods for detecting low variance variables:
+|      **[C.1]** The <span style="color: #0000FF">nearZeroVar</span> method using the <span style="color: #0000FF">freqCut</span> criteria with default setting at 95/5 computes the frequency of the most prevalent value over the second most frequent value (called the “frequency ratio’’), which would be near one for well-behaved predictors and very large for highly-unbalanced data.
+|      **[C.2]** The <span style="color: #0000FF">nearZeroVar</span> method using the <span style="color: #0000FF">uniqueCut</span> criteria with default setting at 10 computes the percent of unique values referring to the number of unique values divided by the total number of samples (times 100) that approaches zero as the granularity of the data increases.
+|
+| **[D]** The <span style="color: #0000FF">nearZeroVar</span> method using both the <span style="color: #0000FF">freqCut</span> and <span style="color: #0000FF">uniqueCut</span> criteria set at 80/20 and 10, respectively, were applied on the dataset:
+|      **[D.1]** 6 variables may be optionally removed from the dataset for the subsequent analysis.
+|
+```{r section_1.3.3, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_Skimmed <- skim(DPA))
+
+##################################
+# Identifying columns with low variance
+###################################
+DPA_LowVariance <- nearZeroVar(DPA,
+                               freqCut = 80/20,
+                               uniqueCut = 10,
+                               saveMetrics= TRUE)
+(DPA_LowVariance[DPA_LowVariance$nzv,])
+
+if ((nrow(DPA_LowVariance[DPA_LowVariance$nzv,]))==0){
+  
+  print("No low variance predictors noted.")
+  
+} else {
+
+  print(paste0("Low variance observed for ",
+               (nrow(DPA_LowVariance[DPA_LowVariance$nzv,])),
+               " numeric variable(s) with First.Second.Mode.Ratio>4 and Unique.Count.Ratio<0.10."))
+  
+  DPA_LowVarianceForRemoval <- (nrow(DPA_LowVariance[DPA_LowVariance$nzv,]))
+  
+  print(paste0("Low variance can be resolved by removing ",
+               (nrow(DPA_LowVariance[DPA_LowVariance$nzv,])),
+               " numeric variable(s)."))
+  
+  for (j in 1:DPA_LowVarianceForRemoval) {
+  DPA_LowVarianceRemovedVariable <- rownames(DPA_LowVariance[DPA_LowVariance$nzv,])[j]
+  print(paste0("Variable ",
+               j,
+               " for removal: ",
+               DPA_LowVarianceRemovedVariable))
+  }
+  
+  DPA %>%
+  skim() %>%
+  dplyr::filter(skim_variable %in% rownames(DPA_LowVariance[DPA_LowVariance$nzv,]))
+  
+  ##################################
+  # Filtering out columns with low variance
+  #################################
+  DPA_ExcludedLowVariance <- DPA[,!names(DPA) %in% rownames(DPA_LowVariance[DPA_LowVariance$nzv,])]
+
+  ##################################
+  # Gathering descriptive statistics
+  ##################################
+  (DPA_ExcludedLowVariance_Skimmed <- skim(DPA_ExcludedLowVariance))
+}
+
+```
+
+### 1.3.4 Collinearity
+|
+| High collinearity data assessment:
+|
+| **[A]** High correlation noted for 10 variable pairs confirmed using the preprocessing summaries from the <mark style="background-color: #CCECFF">**caret**</mark> and <mark style="background-color: #CCECFF">**lares**</mark> packages.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> and <mark style="background-color: #CCECFF">**lares**</mark> packages include methods for detecting highly correlated variables:
+|      **[B.1]** The <span style="color: #0000FF">findCorrelation</span> method using the <span style="color: #0000FF">cutoff</span> criteria with default setting at 0.90 from the <mark style="background-color: #CCECFF">**caret**</mark> package searches through a correlation matrix and returns a vector of integers corresponding to columns to remove to reduce pair-wise correlations.
+|      **[B.2]** The <span style="color: #0000FF">corr_cross</span> method using the <span style="color: #0000FF">top</span> criteria from the <mark style="background-color: #CCECFF">**lares**</mark> package lists out and ranks the variable-pairs with the highest correlation coefficients which were statistically significant.
+|
+| **[C]** The <span style="color: #0000FF">findCorrelation</span> method using the <span style="color: #0000FF">cutoff</span> criterion set at 0.95 and the <span style="color: #0000FF">corr_cross</span> method using the <span style="color: #0000FF">top</span> criterion set at 10  were applied on the dataset:
+|      **[C.1]** 10 variable-pairs were identified to have the highest correlation which were statistically significant.
+|      **[C.2]** 7 variables may be optionally removed from the dataset for the subsequent analysis.
+|
+```{r section_1.3.4, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+
+##################################
+# Visualizing pairwise correlation between predictors
+##################################
+DPA_CorrelationTest <- cor.mtest(DPA.Predictors.Numeric,
+                       method = "pearson",
+                       conf.level = .95)
+
+corrplot(cor(DPA.Predictors.Numeric,
+             method = "pearson",
+             use="pairwise.complete.obs"), 
+         method = "circle",
+         type = "upper", 
+         order = "original", 
+         tl.col = "black", 
+         tl.cex = 0.75,
+         tl.srt = 90, 
+         sig.level = 0.05, 
+         p.mat = DPA_CorrelationTest$p,
+         insig = "blank")
+
+##################################
+# Identifying the highly correlated variables
+##################################
+DPA_Correlation <-  cor(DPA.Predictors.Numeric, 
+                        method = "pearson",
+                        use="pairwise.complete.obs")
+(DPA_HighlyCorrelatedCount <- sum(abs(DPA_Correlation[upper.tri(DPA_Correlation)]) > 0.95))
+
+if (DPA_HighlyCorrelatedCount == 0) {
+  print("No highly correlated predictors noted.")
+} else {
+  print(paste0("High correlation observed for ",
+               (DPA_HighlyCorrelatedCount),
+               " pairs of numeric variable(s) with Correlation.Coefficient>0.95."))
+  
+  (DPA_HighlyCorrelatedPairs <- corr_cross(DPA.Predictors.Numeric,
+  max_pvalue = 0.05, 
+  top = DPA_HighlyCorrelatedCount,
+  rm.na = TRUE,
+  grid = FALSE
+))
+  
+}
+
+
+if (DPA_HighlyCorrelatedCount > 0) {
+  DPA_HighlyCorrelated <- findCorrelation(DPA_Correlation, cutoff = 0.95)
+  
+  (DPA_HighlyCorrelatedForRemoval <- length(DPA_HighlyCorrelated))
+  
+  print(paste0("High correlation can be resolved by removing ",
+               (DPA_HighlyCorrelatedForRemoval),
+               " numeric variable(s)."))
+  
+  for (j in 1:DPA_HighlyCorrelatedForRemoval) {
+  DPA_HighlyCorrelatedRemovedVariable <- colnames(DPA.Predictors.Numeric)[DPA_HighlyCorrelated[j]]
+  print(paste0("Variable ",
+               j,
+               " for removal: ",
+               DPA_HighlyCorrelatedRemovedVariable))
+  }
+  
+  ##################################
+  # Filtering out columns with high correlation
+  #################################
+  DPA_ExcludedHighCorrelation <- DPA[,-DPA_HighlyCorrelated]
+  
+  ##################################
+  # Gathering descriptive statistics
+  ##################################
+  (DPA_ExcludedHighCorrelation_Skimmed <- skim(DPA_ExcludedHighCorrelation))
+}
+
+```
+
+### 1.3.5 Linear Dependencies
+|
+| Linear dependency data assessment:
+|
+| **[A]** Linear dependency noted for 1 subset of 3 variables using the preprocessing summary from the <mark style="background-color: #CCECFF">**caret**</mark> package.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes a method for detecting linearly dependent variables:
+|      **[B.1]** The <span style="color: #0000FF">findLinearCombos</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package uses the QR decomposition of a matrix to enumerate sets of linear combinations (if they exist).
+|
+| **[C]** The <span style="color: #0000FF">findLinearCombos</span> method was applied on the dataset:
+|      **[C.1]** 1 subset involving 3 variables was identified to have linear dependency.
+|      **[C.2]** 1/3 linearly dependent variables from the subset may be optionally removed from the dataset for the subsequent analysis.
+|
+```{r section_1.3.5, warning=FALSE, message=FALSE}
+##################################
+# Reusing imputed dataset
+# to facilitate linear dependency assessment
+# on complete data with no missing values
+##################################
+DPA <- DPA_BagImputed
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+
+##################################
+# Finding linear dependencies
+##################################
+DPA_LinearlyDependent <- findLinearCombos(DPA.Predictors.Numeric)
+
+##################################
+# Identifying the linearly dependent variables
+##################################
+DPA_LinearlyDependent <- findLinearCombos(DPA.Predictors.Numeric)
+
+(DPA_LinearlyDependentCount <- length(DPA_LinearlyDependent$linearCombos))
+
+if (DPA_LinearlyDependentCount == 0) {
+  print("No linearly dependent predictors noted.")
+} else {
+  print(paste0("Linear dependency observed for ",
+               (DPA_LinearlyDependentCount),
+               " subset(s) of numeric variable(s)."))
+  
+  for (i in 1:DPA_LinearlyDependentCount) {
+    DPA_LinearlyDependentSubset <- colnames(DPA.Predictors.Numeric)[DPA_LinearlyDependent$linearCombos[[i]]]
+    print(paste0("Linear dependent variable(s) for subset ",
+                 i,
+                 " include: ",
+                 DPA_LinearlyDependentSubset))
+  }
+  
+}
+
+##################################
+# Identifying the linearly dependent variables for removal
+##################################
+
+if (DPA_LinearlyDependentCount > 0) {
+  DPA_LinearlyDependent <- findLinearCombos(DPA.Predictors.Numeric)
+  
+  DPA_LinearlyDependentForRemoval <- length(DPA_LinearlyDependent$remove)
+  
+  print(paste0("Linear dependency can be resolved by removing ",
+               (DPA_LinearlyDependentForRemoval),
+               " numeric variable(s)."))
+  
+  for (j in 1:DPA_LinearlyDependentForRemoval) {
+  DPA_LinearlyDependentRemovedVariable <- colnames(DPA.Predictors.Numeric)[DPA_LinearlyDependent$remove[j]]
+  print(paste0("Variable ",
+               j,
+               " for removal: ",
+               DPA_LinearlyDependentRemovedVariable))
+  }
+  
+  ##################################
+  # Filtering out columns with linear dependency
+  #################################
+  DPA_ExcludedLinearlyDependent <- DPA.Predictors.Numeric[,-DPA_LinearlyDependent$remove]
+  
+  ##################################
+  # Gathering descriptive statistics
+  ##################################
+  (DPA_ExcludedLinearlyDependent_Skimmed <- skim(DPA_ExcludedLinearlyDependent))
+
+}
+
+```
+
+### 1.3.6 Centering and Scaling
+|
+| Centering and scaling data assessment:
+|
+| **[A]** Centering and scaling transformation for numerical stability remains optional depending on potential model requirements for the subsequent steps.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes three methods for centering and scaling variables:
+|      **[B.1]** The <span style="color: #0000FF">center</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package subtracts the average value of a numeric variable to all the values. As a result of centering, the variable has a zero mean.
+|      **[B.2]** The <span style="color: #0000FF">scale</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package performs a center transformation with each value of the variable divided by its standard deviation. Scaling the data coerces the values to have a common standard deviation of one.
+|      **[B.3]** The <span style="color: #0000FF">range</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package scales the data to be within the defined numeric range bound.
+|
+| **[C]** The <span style="color: #0000FF">center</span>, <span style="color: #0000FF">scale</span> and <span style="color: #0000FF">range</span> methods were tried on the dataset. 
+|
+```{r section_1.3.6, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_Skimmed <- skim(DPA.Predictors.Numeric))
+
+##################################
+# Applying a center transformation
+##################################
+DPA_Centered <- preProcess(DPA.Predictors.Numeric, method = c("center"))
+DPA_CenteredTransformed <- predict(DPA_Centered, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_CenteredTransformedSkimmed <- skim(DPA_CenteredTransformed))
+
+##################################
+# Applying a center and scale data transformation
+##################################
+DPA_CenteredScaled <- preProcess(DPA.Predictors.Numeric, method = c("center","scale"))
+DPA_CenteredScaledTransformed <- predict(DPA_CenteredScaled, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_CenteredScaledTransformedSkimmed <- skim(DPA_CenteredScaledTransformed))
+
+##################################
+# Applying a range transformation
+##################################
+DPA_Ranged <- preProcess(DPA.Predictors.Numeric, method = c("range"), rangeBounds = c(0, 1))
+DPA_RangedTransformed <- predict(DPA_Ranged, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_RangedTransformedSkimmed <- skim(DPA_RangedTransformed))
+```
+
+### 1.3.7 Shape Transformation
+|
+| Data transformation assessment:
+|
+| **[A]** Shape transformation to remove skewness for data distribution stability remains optional depending on potential model requirements for the subsequent steps.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes three methods for transforming variables:
+|      **[B.1]** The <span style="color: #0000FF">BoxCox</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package transforms the distributional shape for variables with strictly positive values.
+|      **[B.2]** The <span style="color: #0000FF">YeoJohnson</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package transforms the distributional shape for variables with zero and/or negative values.
+|      **[B.3]** The <span style="color: #0000FF">expoTrans</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package transforms the distributional shape for variables with zero and/or negative values.
+|
+| **[C]** The <span style="color: #0000FF">BoxCox</span>, <span style="color: #0000FF">YeoJohnson</span> and <span style="color: #0000FF">expoTrans</span> methods were tried on the dataset. 
+|
+```{r section_1.3.7, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_Skimmed <- skim(DPA.Predictors.Numeric))
+
+##################################
+# Applying a Box-Cox transformation
+##################################
+DPA_BoxCox <- preProcess(DPA.Predictors.Numeric, method = c("BoxCox"))
+DPA_BoxCoxTransformed <- predict(DPA_BoxCox, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_BoxCoxTransformedSkimmed <- skim(DPA_BoxCoxTransformed))
+
+##################################
+# Applying a Yeo-Johnson transformation
+##################################
+DPA_YeoJohnson <- preProcess(DPA.Predictors.Numeric, method = c("YeoJohnson"))
+DPA_YeoJohnsonTransformed <- predict(DPA_YeoJohnson, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_YeoJohnsonTransformedSkimmed <- skim(DPA_YeoJohnsonTransformed))
+
+##################################
+# Applying an exponential transformation
+##################################
+DPA_ExpoTrans <- preProcess(DPA.Predictors.Numeric, method = c("expoTrans"))
+DPA_ExpoTransTransformed <- predict(DPA_ExpoTrans, DPA.Predictors.Numeric)
+
+##################################
+# Gathering descriptive statistics
+##################################
+(DPA_ExpoTransTransformedSkimmed <- skim(DPA_ExpoTransTransformed))
+
+```
+
+### 1.3.8 Dummy Variables
+|
+| Dummy variable creation assessment:
+|
+| **[A]** Dummy variable creation (or one-hot encoding) for factor variables remains optional depending on potential model requirements for the subsequent steps.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for creating dummy variables:
+|      **[B.1]** The <span style="color: #0000FF">dummyVars</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package generates a complete (less than full rank parameterized) set of dummy variables from one or more factors.
+|
+| **[C]** The <span style="color: #0000FF">dummyVars</span> method was tried on the dataset. 
+|
+```{r section_1.3.8, warning=FALSE, message=FALSE}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors.Factor <- DPA.Predictors[,sapply(DPA.Predictors, is.factor)]
+
+##################################
+# Applying dummy variable creation
+##################################
+if (length(names(DPA.Predictors.Factor))>0) {
+  print(paste0("There are ",
+               (length(names(DPA.Predictors.Factor))),
+               " factor variables for dummy variable creation."))
+  DPA_DummyVariables <- dummyVars(Yield ~ ., data = DPA)
+  DPA_DummyVariablesCreated <- predict(DPA_DummyVariables, DPA)
+  
+  ##################################
+  # Gathering descriptive statistics
+  ##################################
+  (DPA_DummyVariablesCreatedSkimmed <- skim(DPA_DummyVariablesCreated))
+  
+} else {
+  print("There are no factor variables for dummy variable creation.")
+}
+
+```
+
+##  1.4 Data Exploration
+|
+| Data exploration assessment:
+|
+| **[A]** Data exploration for regression modelling problems involve bivariate analysis between the numeric response variable and the numeric predictor variables.
+|
+| **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for performing data exploration:
+|      **[B.1]** The <span style="color: #0000FF">featurePlot</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package generates various graphs (scatter and correlation pairs) for exploring and visualizing the potential relationships between the response and predictor variables.
+|
+| **[C]** The <span style="color: #0000FF">featurePlot</span> method was tried on the dataset. 
+|
+```{r section_1.4, warning=FALSE, message=FALSE, fig.width=15, fig.height=20}
+##################################
+# Loading dataset
+##################################
+DPA <- ChemicalManufacturingProcess
+
+##################################
+# Listing all predictors
+##################################
+DPA.Predictors <- DPA[,!names(DPA) %in% c("Yield")]
+
+##################################
+# Listing all numeric predictors
+##################################
+DPA.Predictors.Numeric <- DPA.Predictors[,sapply(DPA.Predictors, is.numeric)]
+ncol(DPA.Predictors.Numeric)
+
+##################################
+# Formulating the scatter plot
+##################################
+featurePlot(x = DPA.Predictors.Numeric, 
+            y = DPA$Yield,
+            plot = "scatter",
+            type = c("p", "smooth"),
+            span = .5,
+            layout = c(5, ceiling(ncol(DPA.Predictors.Numeric)/5)))
+
+```
+
+##  1.5 References
+|
+| **[Book]** [Applied Predictive Modelling Textbook](http://appliedpredictivemodeling.com/) by Max Kuhn and Kjell Johnson
+| **[Article]** [Caret Package – A Practical Guide to Machine Learning in R](https://www.machinelearningplus.com/machine-learning/caret-package/) by Selva Prabhakaran
+| **[Article]** [Outlier Detection in R](https://statsandr.com/blog/outliers-detection-in-r/) by Antoine Soetewey
+| **[R Package]** [Caret](https://topepo.github.io/caret/index.html) by Max Kuhn
+| **[R Package]** [lares](https://cran.rstudio.com/web/packages/lares/lares.pdf) by Bernardo Lares
+|
+|
+|
+|
+|
