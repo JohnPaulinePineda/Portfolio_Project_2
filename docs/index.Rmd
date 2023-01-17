@@ -1030,7 +1030,7 @@ featurePlot(x = DPA.Predictors.Numeric,
 
 ```
 
-##  1.5 References
+# **2. References**
 |
 | **[Book]** [Applied Predictive Modelling Textbook](http://appliedpredictivemodeling.com/) by Max Kuhn and Kjell Johnson
 | **[Article]** [Caret Package – A Practical Guide to Machine Learning in R](https://www.machinelearningplus.com/machine-learning/caret-package/) by Selva Prabhakaran
