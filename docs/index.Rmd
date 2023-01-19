@@ -445,7 +445,7 @@ dplyr::filter(n_missing > 0)
 | **[C]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for outlier treatment:
 |      **[C.1]** The <span style="color: #0000FF">spatialSign</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package projects the data for a predictor to the unit circle in p dimensions by dividing it by its norm, where p is the number of predictors.
 |
-| **[D]** The <span style="color: #0000FF">spatialSign</span> methods was applied on the dataset: 
+| **[D]** The <span style="color: #0000FF">spatialSign</span> method was applied on the dataset: 
 |      **[D.1]** While data distribution generally improved with the number of remaining outliers reduced, there are still 40 variables noted with outliers using the IQR criterion.
 |
 ```{r section_1.3.2, warning=FALSE, message=FALSE, fig.width=15, fig.height=3}
@@ -815,7 +815,7 @@ if (DPA_LinearlyDependentCount > 0) {
 |      **[B.2]** The <span style="color: #0000FF">scale</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package performs a center transformation with each value of the variable divided by its standard deviation. Scaling the data coerces the values to have a common standard deviation of one.
 |      **[B.3]** The <span style="color: #0000FF">range</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package scales the data to be within the defined numeric range bound.
 |
-| **[C]** The <span style="color: #0000FF">center</span>, <span style="color: #0000FF">scale</span> and <span style="color: #0000FF">range</span> methods were tried on the dataset. 
+| **[C]** The <span style="color: #0000FF">center</span>, <span style="color: #0000FF">scale</span> and <span style="color: #0000FF">range</span> methods were evaluated on the dataset. 
 |
 ```{r section_1.3.6, warning=FALSE, message=FALSE}
 ##################################
@@ -883,7 +883,7 @@ DPA_RangedTransformed <- predict(DPA_Ranged, DPA.Predictors.Numeric)
 |      **[B.2]** The <span style="color: #0000FF">YeoJohnson</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package transforms the distributional shape for variables with zero and/or negative values.
 |      **[B.3]** The <span style="color: #0000FF">expoTrans</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package transforms the distributional shape for variables with zero and/or negative values.
 |
-| **[C]** The <span style="color: #0000FF">BoxCox</span>, <span style="color: #0000FF">YeoJohnson</span> and <span style="color: #0000FF">expoTrans</span> methods were tried on the dataset. 
+| **[C]** The <span style="color: #0000FF">BoxCox</span>, <span style="color: #0000FF">YeoJohnson</span> and <span style="color: #0000FF">expoTrans</span> methods were evaluated on the dataset. 
 |
 ```{r section_1.3.7, warning=FALSE, message=FALSE}
 ##################################
@@ -951,7 +951,7 @@ DPA_ExpoTransTransformed <- predict(DPA_ExpoTrans, DPA.Predictors.Numeric)
 | **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for creating dummy variables:
 |      **[B.1]** The <span style="color: #0000FF">dummyVars</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package generates a complete (less than full rank parameterized) set of dummy variables from one or more factors.
 |
-| **[C]** The <span style="color: #0000FF">dummyVars</span> method was tried on the dataset. 
+| **[C]** The <span style="color: #0000FF">dummyVars</span> method was evaluated on the dataset. 
 |
 ```{r section_1.3.8, warning=FALSE, message=FALSE}
 ##################################
@@ -999,7 +999,7 @@ if (length(names(DPA.Predictors.Factor))>0) {
 | **[B]** The <mark style="background-color: #CCECFF">**caret**</mark> package includes one method for performing data exploration:
 |      **[B.1]** The <span style="color: #0000FF">featurePlot</span> method from the <mark style="background-color: #CCECFF">**caret**</mark> package generates various graphs (scatter and correlation pairs) for exploring and visualizing the potential relationships between the response and predictor variables.
 |
-| **[C]** The <span style="color: #0000FF">featurePlot</span> method was tried on the dataset. 
+| **[C]** The <span style="color: #0000FF">featurePlot</span> method was evaluated on the dataset. 
 |
 ```{r section_1.4, warning=FALSE, message=FALSE, fig.width=15, fig.height=20}
 ##################################
