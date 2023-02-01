@@ -1032,11 +1032,38 @@ featurePlot(x = DPA.Predictors.Numeric,
 
 # **2. References**
 |
-| **[Book]** [Applied Predictive Modelling Textbook](http://appliedpredictivemodeling.com/) by Max Kuhn and Kjell Johnson
-| **[Article]** [Caret Package – A Practical Guide to Machine Learning in R](https://www.machinelearningplus.com/machine-learning/caret-package/) by Selva Prabhakaran
-| **[Article]** [Outlier Detection in R](https://statsandr.com/blog/outliers-detection-in-r/) by Antoine Soetewey
-| **[R Package]** [Caret](https://topepo.github.io/caret/index.html) by Max Kuhn
+| **[Book]** [Applied Predictive Modeling](http://appliedpredictivemodeling.com/) by Max Kuhn and Kjell Johnson
+| **[Book]** [An Introduction to Statistical Learning](https://www.statlearning.com/) by Gareth James, Daniela Witten, Trevor Hastie and Rob Tibshirani
+| **[Book]** [R For Data Science](https://r4ds.had.co.nz/index.html) by Hadley Wickham and Garrett Grolemund
+| **[Book]** [Exploratory Data Analysis with R](https://bookdown.org/rdpeng/exdata/) by Roger Peng
+| **[Book]** [Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html) by Deepayan Sarkar
+| **[Book]** [Machine Learning](https://bookdown.org/ssjackson300/Machine-Learning-Lecture-Notes/) by Samuel Jackson
+| **[Book]** [Data Modeling Methods](https://bookdown.org/larget_jacob/data-modeling-methods/) by Jacob Larget
+| **[Book]** [Introduction to R](https://biocorecrg.github.io/CRG_RIntroduction/) by Sara Bonnin
+| **[R Package]** [AppliedPredictiveModeling](https://cran.r-project.org/web//packages/AppliedPredictiveModeling/AppliedPredictiveModeling.pdf) by Max Kuhn
+| **[R Package]** [caret](https://topepo.github.io/caret/index.html) by Max Kuhn
+| **[R Package]** [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html/) by Hadley Wickham
+| **[R Package]** [moments](https://cran.r-project.org/web/packages/moments/index.html) by Lukasz Komsta and Frederick
+| **[R Package]** [skimr](https://cran.r-project.org/web/packages/skimr/skimr.pdf) by  Elin Waring
+| **[R Package]** [RANN](https://cran.r-project.org/web/packages/RANN/RANN.pdf) by  Sunil Arya, David Mount, Samuel Kemp and Gregory Jefferis
+| **[R Package]** [corrplot](https://cran.r-project.org/web/packages/corrplot/corrplot.pdf) by Taiyun Wei
 | **[R Package]** [lares](https://cran.rstudio.com/web/packages/lares/lares.pdf) by Bernardo Lares
+| **[R Package]** [DMwR](https://mran.microsoft.com/snapshot/2016-05-02/web/packages/DMwR/DMwR.pdf) by Luis Torgo
+| **[Article]** [The caret Package](https://topepo.github.io/caret/index.html) by Max Kuhn
+| **[Article]** [A Short Introduction to the caret Package](https://cran.r-project.org/web/packages/caret/vignettes/caret.html) by Max Kuhn
+| **[Article]** [Caret Package – A Practical Guide to Machine Learning in R](https://www.machinelearningplus.com/machine-learning/caret-package/#:~:text=Caret%20is%20short%20for%20Classification%20And%20REgression%20Training.,track%20of%20which%20algorithm%20resides%20in%20which%20package.) by Selva Prabhakaran
+| **[Article]** [Lattice Graphs](http://www.sthda.com/english/wiki/lattice-graphs) by STHDA Team
+| **[Article]** [Exploratory Data Analysis in R with Tidyverse](https://www.pluralsight.com/guides/exploratory-data-analysis-in-r) by Nishant Kumar Singh
+| **[Article]** [Exploratory Data Analysis in R (Introduction)](https://blog.datascienceheroes.com/exploratory-data-analysis-in-r-intro/) by Data Science Hero Team
+| **[Article]** [How to do Exploratory Data Analysis (EDA) in R (With Examples)](https://geekflare.com/exploratory-data-analysis/) by Talha Khalid
+| **[Article]** [Packages for Exploratory Data Analysis in R](https://www.r-bloggers.com/2022/04/packages-for-exploratory-data-analysis-in-r/) by Luke DiMartino
+| **[Article]** [DataExplorer: Exploratory Data Analysis in R](https://www.business-science.io/code-tools/2021/03/02/use-dataexplorer-for-EDA.html) by Matt Dancho
+| **[Article]** [How to Perform Exploratory Data Analysis in R (With Example)](https://www.statology.org/exploratory-data-analysis-in-r/) by Statology Team
+| **[Article]** [Exploratory Data Analysis in R Programming](https://www.geeksforgeeks.org/exploratory-data-analysis-in-r-programming/) by Geeks For Geeks Team
+| **[Article]** [Exploratory Data Analysis](https://www.ibm.com/topics/exploratory-data-analysis) by IBM Team
+| **[Article]** [Data Exploration in R (9 Examples) | Exploratory Analysis & Visualization](https://statisticsglobe.com/data-exploration-r) by Joachim Schork
+| **[Article]** [Exploratory Data Analysis in Python](https://www.geeksforgeeks.org/exploratory-data-analysis-in-python/) by Geeks For Geeks Team
+| **[Course]** [Applied Data Mining and Statistical Learning](https://online.stat.psu.edu/stat508/) by Penn State Eberly College of Science
 |
 |
 |
