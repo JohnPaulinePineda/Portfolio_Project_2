@@ -491,10 +491,53 @@ References</strong></a></li>
 <div id="table-of-contents" class="section level1">
 <h1><strong>1. Table of Contents</strong></h1>
 <div class="line-block"><br />
-This document presents a non-exhaustive list of various data quality
-assessment, preprocessing and exploration methods for a regression
-modelling problem using various helpful packages in
-<mark style="background-color: #CCECFF"><strong>R</strong></mark>.<br />
+This project explores the various methods in assessing data quality,
+implementing data preprocessing and conducting exploratory analysis for
+prediction problems with numeric responses using various helpful
+packages in
+<mark style="background-color: #CCECFF"><strong>R</strong></mark>. A
+non-exhaustive list of methods to detect missing data, extreme outlying
+points, near-zero variance, multicollinearity, linear dependencies and
+skewed distributions were evaluated. Remedial procedures on addressing
+data quality issues including missing data imputation, centering and
+scaling transformation, shape transformation and outlier treatment were
+similarly considered, as applicable.<br />
+<br />
+<a href="http://appliedpredictivemodeling.com/">Data quality
+assessment</a> involves profiling and assessing the data to understand
+its suitability for machine learning tasks. The quality of training data
+has a huge impact on the efficiency, accuracy and complexity of machine
+learning tasks. Data remains susceptible to errors or irregularities
+that may be introduced during collection, aggregation or annotation
+stage. Issues such as incorrect labels, synonymous categories in a
+categorical variable or heterogeneity in columns, among others, which
+might go undetected by standard pre-processing modules in these
+frameworks can lead to sub-optimal model performance, inaccurate
+analysis and unreliable decisions.<br />
+<br />
+<a href="http://appliedpredictivemodeling.com/">Data preprocessing</a>
+involves changing the raw feature vectors into a representation that is
+more suitable for the downstream modelling and estimation processes,
+including data cleaning, integration, reduction and transformation. Data
+cleaning aims to identify and correct errors in the dataset that may
+negatively impact a predictive model such as removing outliers,
+replacing missing values, smoothing noisy data, and correcting
+inconsistent data. Data integration addresses potential issues with
+redundant and inconsistent data obtained from multiple sources through
+approaches such as detection of tuple duplication and data conflict. The
+purpose of data reduction is to have a condensed representation of the
+data set that is smaller in volume, while maintaining the integrity of
+the original data set. Data transformation converts the data into the
+most appropriate form for data modeling.<br />
+<br />
+<a href="http://appliedpredictivemodeling.com/">Data exploration</a>
+involves analyzing and investigating data sets to summarize their main
+characteristics, often employing data visualization methods. It helps
+determine how best to manipulate data sources to discover patterns, spot
+anomalies, test a hypothesis, or check assumptions. This process is
+primarily used to see what data can reveal beyond the formal modeling or
+hypothesis testing task and provides a better understanding of data set
+variables and the relationships between them.<br />
 </div>
 <div id="sample-data" class="section level2">
 <h2>1.1 Sample Data</h2>
@@ -3981,8 +4024,8 @@ applied).<br />
 <td align="left">ManufacturingProcess02</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">16.72</td>
-<td align="right">8.42</td>
+<td align="right">16.73</td>
+<td align="right">8.41</td>
 <td align="right">0.00</td>
 <td align="right">19.23</td>
 <td align="right">21.00</td>
@@ -4007,8 +4050,8 @@ applied).<br />
 <td align="left">ManufacturingProcess04</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">931.82</td>
-<td align="right">6.27</td>
+<td align="right">931.81</td>
+<td align="right">6.28</td>
 <td align="right">911.00</td>
 <td align="right">927.75</td>
 <td align="right">934.00</td>
@@ -4020,12 +4063,12 @@ applied).<br />
 <td align="left">ManufacturingProcess05</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">1001.77</td>
-<td align="right">30.46</td>
+<td align="right">1001.73</td>
+<td align="right">30.44</td>
 <td align="right">923.00</td>
 <td align="right">986.82</td>
 <td align="right">999.35</td>
-<td align="right">1009.20</td>
+<td align="right">1008.72</td>
 <td align="right">1175.30</td>
 <td align="left">▁▇▁▁▁</td>
 </tr>
@@ -4086,10 +4129,10 @@ applied).<br />
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">9.18</td>
-<td align="right">0.76</td>
+<td align="right">0.75</td>
 <td align="right">7.50</td>
 <td align="right">8.70</td>
-<td align="right">9.10</td>
+<td align="right">9.09</td>
 <td align="right">9.53</td>
 <td align="right">11.60</td>
 <td align="left">▂▇▆▂▁</td>
@@ -4098,8 +4141,8 @@ applied).<br />
 <td align="left">ManufacturingProcess11</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">9.39</td>
-<td align="right">0.71</td>
+<td align="right">9.38</td>
+<td align="right">0.70</td>
 <td align="right">7.50</td>
 <td align="right">9.00</td>
 <td align="right">9.40</td>
@@ -4111,8 +4154,8 @@ applied).<br />
 <td align="left">ManufacturingProcess12</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">854.46</td>
-<td align="right">1779.98</td>
+<td align="right">858.86</td>
+<td align="right">1779.48</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
@@ -4137,8 +4180,8 @@ applied).<br />
 <td align="left">ManufacturingProcess14</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4853.34</td>
-<td align="right">54.82</td>
+<td align="right">4853.58</td>
+<td align="right">54.50</td>
 <td align="right">4701.00</td>
 <td align="right">4827.25</td>
 <td align="right">4855.50</td>
@@ -4280,7 +4323,7 @@ applied).<br />
 <td align="left">ManufacturingProcess25</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4828.46</td>
+<td align="right">4828.52</td>
 <td align="right">368.11</td>
 <td align="right">0.00</td>
 <td align="right">4833.50</td>
@@ -4293,11 +4336,11 @@ applied).<br />
 <td align="left">ManufacturingProcess26</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6016.52</td>
+<td align="right">6016.47</td>
 <td align="right">458.21</td>
 <td align="right">0.00</td>
 <td align="right">6020.75</td>
-<td align="right">6047.00</td>
+<td align="right">6046.50</td>
 <td align="right">6069.25</td>
 <td align="right">6161.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -4306,10 +4349,10 @@ applied).<br />
 <td align="left">ManufacturingProcess27</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4563.21</td>
-<td align="right">348.92</td>
+<td align="right">4563.22</td>
+<td align="right">348.94</td>
 <td align="right">0.00</td>
-<td align="right">4562.75</td>
+<td align="right">4561.00</td>
 <td align="right">4587.50</td>
 <td align="right">4609.00</td>
 <td align="right">4710.00</td>
@@ -4319,8 +4362,8 @@ applied).<br />
 <td align="left">ManufacturingProcess28</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6.56</td>
-<td align="right">5.19</td>
+<td align="right">6.57</td>
+<td align="right">5.18</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">10.40</td>
@@ -4332,7 +4375,7 @@ applied).<br />
 <td align="left">ManufacturingProcess29</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">20.01</td>
+<td align="right">20.00</td>
 <td align="right">1.64</td>
 <td align="right">0.00</td>
 <td align="right">19.70</td>
@@ -4410,8 +4453,8 @@ applied).<br />
 <td align="left">ManufacturingProcess35</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">495.42</td>
-<td align="right">10.73</td>
+<td align="right">495.58</td>
+<td align="right">10.69</td>
 <td align="right">463.00</td>
 <td align="right">490.00</td>
 <td align="right">495.00</td>
@@ -10044,8 +10087,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess02</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">16.72</td>
-<td align="right">8.42</td>
+<td align="right">16.73</td>
+<td align="right">8.41</td>
 <td align="right">0.00</td>
 <td align="right">19.23</td>
 <td align="right">21.00</td>
@@ -10070,8 +10113,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess04</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">931.82</td>
-<td align="right">6.27</td>
+<td align="right">931.81</td>
+<td align="right">6.28</td>
 <td align="right">911.00</td>
 <td align="right">927.75</td>
 <td align="right">934.00</td>
@@ -10083,12 +10126,12 @@ analysis.<br />
 <td align="left">ManufacturingProcess05</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">1001.77</td>
-<td align="right">30.46</td>
+<td align="right">1001.73</td>
+<td align="right">30.44</td>
 <td align="right">923.00</td>
 <td align="right">986.82</td>
 <td align="right">999.35</td>
-<td align="right">1009.20</td>
+<td align="right">1008.72</td>
 <td align="right">1175.30</td>
 <td align="left">▁▇▁▁▁</td>
 </tr>
@@ -10149,10 +10192,10 @@ analysis.<br />
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">9.18</td>
-<td align="right">0.76</td>
+<td align="right">0.75</td>
 <td align="right">7.50</td>
 <td align="right">8.70</td>
-<td align="right">9.10</td>
+<td align="right">9.09</td>
 <td align="right">9.53</td>
 <td align="right">11.60</td>
 <td align="left">▂▇▆▂▁</td>
@@ -10161,8 +10204,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess11</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">9.39</td>
-<td align="right">0.71</td>
+<td align="right">9.38</td>
+<td align="right">0.70</td>
 <td align="right">7.50</td>
 <td align="right">9.00</td>
 <td align="right">9.40</td>
@@ -10174,8 +10217,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess12</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">854.46</td>
-<td align="right">1779.98</td>
+<td align="right">858.86</td>
+<td align="right">1779.48</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
@@ -10200,8 +10243,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess14</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4853.34</td>
-<td align="right">54.82</td>
+<td align="right">4853.58</td>
+<td align="right">54.50</td>
 <td align="right">4701.00</td>
 <td align="right">4827.25</td>
 <td align="right">4855.50</td>
@@ -10330,7 +10373,7 @@ analysis.<br />
 <td align="left">ManufacturingProcess25</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4828.46</td>
+<td align="right">4828.52</td>
 <td align="right">368.11</td>
 <td align="right">0.00</td>
 <td align="right">4833.50</td>
@@ -10343,11 +10386,11 @@ analysis.<br />
 <td align="left">ManufacturingProcess26</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6016.52</td>
+<td align="right">6016.47</td>
 <td align="right">458.21</td>
 <td align="right">0.00</td>
 <td align="right">6020.75</td>
-<td align="right">6047.00</td>
+<td align="right">6046.50</td>
 <td align="right">6069.25</td>
 <td align="right">6161.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -10356,10 +10399,10 @@ analysis.<br />
 <td align="left">ManufacturingProcess27</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4563.21</td>
-<td align="right">348.92</td>
+<td align="right">4563.22</td>
+<td align="right">348.94</td>
 <td align="right">0.00</td>
-<td align="right">4562.75</td>
+<td align="right">4561.00</td>
 <td align="right">4587.50</td>
 <td align="right">4609.00</td>
 <td align="right">4710.00</td>
@@ -10369,8 +10412,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess28</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6.56</td>
-<td align="right">5.19</td>
+<td align="right">6.57</td>
+<td align="right">5.18</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">10.40</td>
@@ -10382,7 +10425,7 @@ analysis.<br />
 <td align="left">ManufacturingProcess29</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">20.01</td>
+<td align="right">20.00</td>
 <td align="right">1.64</td>
 <td align="right">0.00</td>
 <td align="right">19.70</td>
@@ -10460,8 +10503,8 @@ analysis.<br />
 <td align="left">ManufacturingProcess35</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">495.42</td>
-<td align="right">10.73</td>
+<td align="right">495.58</td>
+<td align="right">10.69</td>
 <td align="right">463.00</td>
 <td align="right">490.00</td>
 <td align="right">495.00</td>
@@ -17421,18 +17464,35 @@ Team<br />
 Data Analysis in R Programming</a> by Geeks For Geeks Team<br />
 <strong>[Article]</strong> <a href="https://www.ibm.com/topics/exploratory-data-analysis">Exploratory
 Data Analysis</a> by IBM Team<br />
+<strong>[Article]</strong> <a href="https://www.ibm.com/topics/exploratory-data-analysis#:~:text=Exploratory%20data%20analysis%20%28EDA%29%20is%20used%20by%20data,their%20main%20characteristics%2C%20often%20employing%20data%20visualization%20methods.">What
+Is Exploratory Data Analysis?</a> by IBM Team<br />
 <strong>[Article]</strong> <a href="https://statisticsglobe.com/data-exploration-r">Data Exploration
 in R (9 Examples) | Exploratory Analysis &amp; Visualization</a> by
 Joachim Schork<br />
 <strong>[Article]</strong> <a href="https://www.geeksforgeeks.org/exploratory-data-analysis-in-python/">Exploratory
 Data Analysis in Python</a> by Geeks For Geeks Team<br />
-<strong>[Course]</strong> <a href="https://online.stat.psu.edu/stat508/">Applied Data Mining and
-Statistical Learning</a> by Penn State Eberly College of Science<br />
-<br />
-<br />
-<br />
-<br />
-</div>
+<strong>[Article]</strong> <a href="https://research.ibm.com/publications/data-quality-assessment-for-machine-learning">Data
+Quality Assessment for Machine Learning</a> by IBM Team<br />
+<strong>[Article]</strong> <a href="https://researcher.watson.ibm.com/researcher/view_group.php?id=10751">Data
+Quality for Machine Learning Tasks</a> by IBM Team<br />
+<strong>[Publication]</strong> <a href="https://www.sciencedirect.com/science/article/pii/S2666285X22000565#:~:text=Data%20Pre-processing%20is%20the%20First%20step%20in%20Machine,algorithm%20can%20promptly%20analyze%20the%20features%20of%20data.">A
+Review: Data Pre-processing and Data Augmentation Techniques</a> by
+Kiran Maharana, Surajit Mondal and Bhushankumar Nemade<br />
+<strong>[Publication]</strong> <a href="https://dl.acm.org/doi/10.1145/3447548.3470817">Data Quality for
+Machine Learning Tasks</a> by Nitin Gupta, Shashank Mujumdar, Hima
+Patel, Satoshi Masuda, Naveen Panwar, Sambaran Bandyopadhyay, Sameep
+Mehta, Shanmukha Guttula, Shazia Afzal, Ruhi Sharma Mittal and Vitobha
+Munigala (KDD ’21: Proceedings of the 27th ACM SIGKDD Conference on
+Knowledge Discovery &amp; Data Mining)<br />
+<strong>[Publication]</strong> <a href="https://dl.acm.org/doi/10.1145/3394486.3406477">Overview and
+Importance of Data Quality for Machine Learning Tasks</a> by Abhinav
+Jain, Hima Patel, Lokesh Nagalapatti, Nitin Gupta, Sameep Mehta,
+Shanmukha Guttula, Shashank Mujumdar, Shazia Afzal,</div>
+<p>Ruhi Sharma Mittal and Vitobha Munigala (KDD ’20: Proceedings of the
+26th ACM SIGKDD International Conference on Knowledge Discovery &amp;
+Data Mining) | <strong>[Course]</strong> <a href="https://online.stat.psu.edu/stat508/">Applied Data Mining and
+Statistical Learning</a> by Penn State Eberly College of Science | | | |
+|</p>
 </div>
 
 

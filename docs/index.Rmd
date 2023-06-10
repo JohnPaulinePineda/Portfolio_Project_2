@@ -16,7 +16,13 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=15, fig.height=10)
 ```
 # **1. Table of Contents**
 |
-| This document presents a non-exhaustive list of various data quality assessment, preprocessing and exploration methods for a regression modelling problem using various helpful packages in <mark style="background-color: #CCECFF">**R**</mark>.    
+| This project explores the various methods in assessing data quality, implementing data preprocessing and conducting exploratory analysis for prediction problems with numeric responses using various helpful packages in <mark style="background-color: #CCECFF">**R**</mark>. A non-exhaustive list of methods to detect missing data, extreme outlying points, near-zero variance, multicollinearity, linear dependencies and skewed distributions were evaluated. Remedial procedures on addressing data quality issues including missing data imputation, centering and scaling transformation, shape transformation and outlier treatment were similarly considered, as applicable.
+|
+| [Data quality assessment](http://appliedpredictivemodeling.com/) involves profiling and assessing the data to understand its suitability for machine learning tasks. The quality of training data has a huge impact on the efficiency, accuracy and complexity of machine learning tasks. Data remains susceptible to errors or irregularities that may be introduced during collection, aggregation or annotation stage. Issues such as incorrect labels, synonymous categories in a categorical variable or heterogeneity in columns, among others, which might go undetected by standard pre-processing modules in these frameworks can lead to sub-optimal model performance, inaccurate analysis and unreliable decisions.
+|
+| [Data preprocessing](http://appliedpredictivemodeling.com/) involves changing the raw feature vectors into a representation that is more suitable for the downstream modelling and estimation processes, including data cleaning, integration, reduction and transformation. Data cleaning aims to identify and correct errors in the dataset that may negatively impact a predictive model such as removing outliers, replacing missing values, smoothing noisy data, and correcting inconsistent data. Data integration addresses potential issues with redundant and inconsistent data obtained from multiple sources through approaches such as detection of tuple duplication and data conflict. The purpose of data reduction is to have a condensed representation of the data set that is smaller in volume, while maintaining the integrity of the original data set. Data transformation converts the data into the most appropriate form for data modeling.
+|
+| [Data exploration](http://appliedpredictivemodeling.com/) involves analyzing and investigating data sets to summarize their main characteristics, often employing data visualization methods. It helps determine how best to manipulate data sources to discover patterns, spot anomalies, test a hypothesis, or check assumptions. This process is primarily used to see what data can reveal beyond the formal modeling or hypothesis testing task and provides a better understanding of data set variables and the relationships between them.
 |
 ##  1.1 Sample Data
 |
@@ -1061,8 +1067,15 @@ featurePlot(x = DPA.Predictors.Numeric,
 | **[Article]** [How to Perform Exploratory Data Analysis in R (With Example)](https://www.statology.org/exploratory-data-analysis-in-r/) by Statology Team
 | **[Article]** [Exploratory Data Analysis in R Programming](https://www.geeksforgeeks.org/exploratory-data-analysis-in-r-programming/) by Geeks For Geeks Team
 | **[Article]** [Exploratory Data Analysis](https://www.ibm.com/topics/exploratory-data-analysis) by IBM Team
+| **[Article]** [What Is Exploratory Data Analysis?](https://www.ibm.com/topics/exploratory-data-analysis#:~:text=Exploratory%20data%20analysis%20%28EDA%29%20is%20used%20by%20data,their%20main%20characteristics%2C%20often%20employing%20data%20visualization%20methods.) by IBM Team
 | **[Article]** [Data Exploration in R (9 Examples) | Exploratory Analysis & Visualization](https://statisticsglobe.com/data-exploration-r) by Joachim Schork
 | **[Article]** [Exploratory Data Analysis in Python](https://www.geeksforgeeks.org/exploratory-data-analysis-in-python/) by Geeks For Geeks Team
+| **[Article]** [Data Quality Assessment for Machine Learning](https://research.ibm.com/publications/data-quality-assessment-for-machine-learning) by IBM Team
+| **[Article]** [Data Quality for Machine Learning Tasks](https://researcher.watson.ibm.com/researcher/view_group.php?id=10751) by IBM Team
+| **[Publication]** [A Review: Data Pre-processing and Data Augmentation Techniques](https://www.sciencedirect.com/science/article/pii/S2666285X22000565#:~:text=Data%20Pre-processing%20is%20the%20First%20step%20in%20Machine,algorithm%20can%20promptly%20analyze%20the%20features%20of%20data.) by Kiran Maharana, Surajit Mondal and Bhushankumar Nemade
+| **[Publication]** [Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3447548.3470817) by Nitin Gupta, Shashank Mujumdar, Hima Patel, Satoshi Masuda, Naveen Panwar, Sambaran Bandyopadhyay, Sameep Mehta, Shanmukha Guttula, Shazia Afzal, Ruhi Sharma Mittal and Vitobha Munigala (KDD '21: Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining)
+| **[Publication]** [Overview and Importance of Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3394486.3406477) by Abhinav Jain, Hima Patel, Lokesh Nagalapatti, Nitin Gupta, Sameep Mehta, Shanmukha Guttula, Shashank Mujumdar, Shazia Afzal, 
+Ruhi Sharma Mittal and Vitobha Munigala (KDD '20: Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining)
 | **[Course]** [Applied Data Mining and Statistical Learning](https://online.stat.psu.edu/stat508/) by Penn State Eberly College of Science
 |
 |
