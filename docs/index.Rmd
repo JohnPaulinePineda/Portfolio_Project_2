@@ -1139,8 +1139,7 @@ featurePlot(x = DPA.Predictors.Numeric,
 | **[Article]** [Data Quality for Machine Learning Tasks](https://researcher.watson.ibm.com/researcher/view_group.php?id=10751) by IBM Team
 | **[Publication]** [A Review: Data Pre-processing and Data Augmentation Techniques](https://www.sciencedirect.com/science/article/pii/S2666285X22000565#:~:text=Data%20Pre-processing%20is%20the%20First%20step%20in%20Machine,algorithm%20can%20promptly%20analyze%20the%20features%20of%20data.) by Kiran Maharana, Surajit Mondal and Bhushankumar Nemade
 | **[Publication]** [Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3447548.3470817) by Nitin Gupta, Shashank Mujumdar, Hima Patel, Satoshi Masuda, Naveen Panwar, Sambaran Bandyopadhyay, Sameep Mehta, Shanmukha Guttula, Shazia Afzal, Ruhi Sharma Mittal and Vitobha Munigala (KDD '21: Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining)
-| **[Publication]** [Overview and Importance of Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3394486.3406477) by Abhinav Jain, Hima Patel, Lokesh Nagalapatti, Nitin Gupta, Sameep Mehta, Shanmukha Guttula, Shashank Mujumdar, Shazia Afzal, 
-Ruhi Sharma Mittal and Vitobha Munigala (KDD '20: Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining)
+| **[Publication]** [Overview and Importance of Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3394486.3406477) by Abhinav Jain, Hima Patel, Lokesh Nagalapatti, Nitin Gupta, Sameep Mehta, Shanmukha Guttula, Shashank Mujumdar, Shazia Afzal, Ruhi Sharma Mittal and Vitobha Munigala (KDD '20: Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining)
 | **[Course]** [Applied Data Mining and Statistical Learning](https://online.stat.psu.edu/stat508/) by Penn State Eberly College of Science
 |
 |
