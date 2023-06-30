@@ -459,6 +459,8 @@ dplyr::filter(n_missing > 0)
 
 ### 1.3.2 Outlier Treatment
 |
+| [Spatial Sign Transformation](https://pubs.acs.org/doi/10.1021/ci050498u) takes a set of predictor variables and transforms them in a way that the new values have the same distance to the center of the distribution. This approach is also referred to as global contrast normalization where the data are projected onto a multidimensional sphere. The transformation required computing the norm of the data and would benefit from a centering and scaling operation, as well as transformation methods inducing symmetry, prior to the spatial sign process.
+|
 | Outlier data assessment:
 |
 | **[A]** Outliers noted for 48 variables. Outlier treatment for numerical stability remains optional depending on potential model requirements for the subsequent steps.
@@ -1109,6 +1111,7 @@ featurePlot(x = DPA.Predictors.Numeric,
 | **[Book]** [Exploratory Data Analysis with R](https://bookdown.org/rdpeng/exdata/) by Roger Peng
 | **[Book]** [Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html) by Deepayan Sarkar
 | **[Book]** [Machine Learning](https://bookdown.org/ssjackson300/Machine-Learning-Lecture-Notes/) by Samuel Jackson
+| **[Book]** [Feature Engineering and Selection: A Practical Approach for Predictive Models](http://www.feat.engineering/index.html) by Max Kuhn and Kjell Johnson
 | **[Book]** [Data Modeling Methods](https://bookdown.org/larget_jacob/data-modeling-methods/) by Jacob Larget
 | **[Book]** [Introduction to R](https://biocorecrg.github.io/CRG_RIntroduction/) by Sara Bonnin
 | **[R Package]** [AppliedPredictiveModeling](https://cran.r-project.org/web//packages/AppliedPredictiveModeling/AppliedPredictiveModeling.pdf) by Max Kuhn
@@ -1140,6 +1143,7 @@ featurePlot(x = DPA.Predictors.Numeric,
 | **[Publication]** [A Review: Data Pre-processing and Data Augmentation Techniques](https://www.sciencedirect.com/science/article/pii/S2666285X22000565#:~:text=Data%20Pre-processing%20is%20the%20First%20step%20in%20Machine,algorithm%20can%20promptly%20analyze%20the%20features%20of%20data.) by Kiran Maharana, Surajit Mondal and Bhushankumar Nemade
 | **[Publication]** [Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3447548.3470817) by Nitin Gupta, Shashank Mujumdar, Hima Patel, Satoshi Masuda, Naveen Panwar, Sambaran Bandyopadhyay, Sameep Mehta, Shanmukha Guttula, Shazia Afzal, Ruhi Sharma Mittal and Vitobha Munigala (KDD '21: Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining)
 | **[Publication]** [Overview and Importance of Data Quality for Machine Learning Tasks](https://dl.acm.org/doi/10.1145/3394486.3406477) by Abhinav Jain, Hima Patel, Lokesh Nagalapatti, Nitin Gupta, Sameep Mehta, Shanmukha Guttula, Shashank Mujumdar, Shazia Afzal, Ruhi Sharma Mittal and Vitobha Munigala (KDD '20: Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining)
+| **[Publication]** [Spatial Sign Preprocessing: A Simple Way To Impart Moderate Robustness to Multivariate Estimators](https://pubs.acs.org/doi/10.1021/ci050498u) by Sven Serneels, Evert De Nolf, and Pierre Van Espen (Journal of Chemical Information and Modeling)
 | **[Course]** [Applied Data Mining and Statistical Learning](https://online.stat.psu.edu/stat508/) by Penn State Eberly College of Science
 |
 |
