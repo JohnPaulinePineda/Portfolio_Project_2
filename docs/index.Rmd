@@ -361,6 +361,12 @@ if (length(names(DQA.Predictors.Numeric))==0) {
 
 ### 1.3.1 Missing Data Imputation
 |
+| [K-Nearest Neighbors Imputation](http://www.feat.engineering/index.html) identifies a sample with one or more missing values and determines the K most similar samples in the training data that are complete. Similarity of samples for this method is defined by either the Euclidean distance (numeric predictors) or Gower's distance (numeric and categorical predictors) metrics. The distance measure is computed for each predictor and the average distance is used as the overall distance. The K closest samples to the sample with the missing value are identified. Once the K neighbors are found, their values are used to impute the missing data. The mode is used to impute qualitative predictors while the average or median is used to impute quantitative predictors.  
+|
+| [Bagged Trees Imputation](http://www.feat.engineering/index.html) combines bootstrapping and decision trees to construct an ensemble for each predictor as a function of all the others. Tree-based models are a reasonable choice for an imputation technique since a tree can be constructed in the presence of other missing data, aside from generally having good accuracy without extrapolating values beyond the bounds of the training data. The modeling process involves generating bootstrap samples of the original data, training an unpruned decision tree for each bootstrap subset of the data and implementing an ensemble voting for all the individual decision tree predictions to formulate the final prediction.
+|
+| [Median Imputation](http://www.feat.engineering/index.html) replaces missing numeric values with the sample median providing a fast and simple fix for the missing data. However, this process will change the distributional shape, underestimate the variance, disturb the relations between variables, bias almost any estimate other than the median and bias the estimate of the median when data are not missing completely at random, especially when the missing values are large in number. This method can be slightly improved by stratifying data into subgroups.
+|
 | Missing data assessment:
 |
 | **[A]** Missing observations noted for 28 variables from the previous data quality assessment.
