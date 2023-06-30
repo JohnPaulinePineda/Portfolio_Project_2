@@ -1609,6 +1609,41 @@ Chunk | Output</strong></mark>
 <div id="missing-data-imputation" class="section level3">
 <h3>1.3.1 Missing Data Imputation</h3>
 <div class="line-block"><br />
+<a href="http://www.feat.engineering/index.html">K-Nearest Neighbors
+Imputation</a> identifies a sample with one or more missing values and
+determines the K most similar samples in the training data that are
+complete. Similarity of samples for this method is defined by either the
+Euclidean distance (numeric predictors) or Gower’s distance (numeric and
+categorical predictors) metrics. The distance measure is computed for
+each predictor and the average distance is used as the overall distance.
+The K closest samples to the sample with the missing value are
+identified. Once the K neighbors are found, their values are used to
+impute the missing data. The mode is used to impute qualitative
+predictors while the average or median is used to impute quantitative
+predictors.<br />
+<br />
+<a href="http://www.feat.engineering/index.html">Bagged Trees
+Imputation</a> combines bootstrapping and decision trees to construct an
+ensemble for each predictor as a function of all the others. Tree-based
+models are a reasonable choice for an imputation technique since a tree
+can be constructed in the presence of other missing data, aside from
+generally having good accuracy without extrapolating values beyond the
+bounds of the training data. The modeling process involves generating
+bootstrap samples of the original data, training an unpruned decision
+tree for each bootstrap subset of the data and implementing an ensemble
+voting for all the individual decision tree predictions to formulate the
+final prediction.<br />
+<br />
+<a href="http://www.feat.engineering/index.html">Median Imputation</a>
+replaces missing numeric values with the sample median providing a fast
+and simple fix for the missing data. However, this process will change
+the distributional shape, underestimate the variance, disturb the
+relations between variables, bias almost any estimate other than the
+median and bias the estimate of the median when data are not missing
+completely at random, especially when the missing values are large in
+number. This method can be slightly improved by stratifying data into
+subgroups.<br />
+<br />
 Missing data assessment:<br />
 <br />
 <strong>[A]</strong> Missing observations noted for 28 variables from
@@ -4043,8 +4078,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess02</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">16.70</td>
-<td align="right">8.43</td>
+<td align="right">16.69</td>
+<td align="right">8.44</td>
 <td align="right">0.00</td>
 <td align="right">19.23</td>
 <td align="right">21.00</td>
@@ -4069,10 +4104,10 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess04</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">931.83</td>
-<td align="right">6.26</td>
+<td align="right">931.82</td>
+<td align="right">6.27</td>
 <td align="right">911.00</td>
-<td align="right">928.00</td>
+<td align="right">927.75</td>
 <td align="right">934.00</td>
 <td align="right">936.00</td>
 <td align="right">946.00</td>
@@ -4082,12 +4117,12 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess05</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">1001.72</td>
-<td align="right">30.44</td>
+<td align="right">1001.83</td>
+<td align="right">30.49</td>
 <td align="right">923.00</td>
 <td align="right">986.82</td>
 <td align="right">999.35</td>
-<td align="right">1008.72</td>
+<td align="right">1009.20</td>
 <td align="right">1175.30</td>
 <td align="left">▁▇▁▁▁</td>
 </tr>
@@ -4152,7 +4187,7 @@ Chunk | Output</strong></mark>
 <td align="right">7.50</td>
 <td align="right">8.70</td>
 <td align="right">9.10</td>
-<td align="right">9.50</td>
+<td align="right">9.53</td>
 <td align="right">11.60</td>
 <td align="left">▂▇▆▂▁</td>
 </tr>
@@ -4161,7 +4196,7 @@ Chunk | Output</strong></mark>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">9.39</td>
-<td align="right">0.70</td>
+<td align="right">0.71</td>
 <td align="right">7.50</td>
 <td align="right">9.00</td>
 <td align="right">9.40</td>
@@ -4173,8 +4208,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess12</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">855.56</td>
-<td align="right">1779.67</td>
+<td align="right">853.19</td>
+<td align="right">1780.48</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
@@ -4199,8 +4234,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess14</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4853.26</td>
-<td align="right">54.96</td>
+<td align="right">4853.50</td>
+<td align="right">54.59</td>
 <td align="right">4701.00</td>
 <td align="right">4827.25</td>
 <td align="right">4855.50</td>
@@ -4330,7 +4365,7 @@ Chunk | Output</strong></mark>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">8.87</td>
-<td align="right">5.80</td>
+<td align="right">5.81</td>
 <td align="right">0.00</td>
 <td align="right">4.00</td>
 <td align="right">8.00</td>
@@ -4342,11 +4377,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess25</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4828.11</td>
-<td align="right">368.15</td>
+<td align="right">4828.73</td>
+<td align="right">368.12</td>
 <td align="right">0.00</td>
-<td align="right">4832.00</td>
-<td align="right">4854.00</td>
+<td align="right">4833.50</td>
+<td align="right">4854.41</td>
 <td align="right">4876.25</td>
 <td align="right">4990.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -4355,11 +4390,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess26</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6012.70</td>
-<td align="right">460.67</td>
+<td align="right">6016.51</td>
+<td align="right">458.21</td>
 <td align="right">0.00</td>
-<td align="right">6019.75</td>
-<td align="right">6046.50</td>
+<td align="right">6020.75</td>
+<td align="right">6046.98</td>
 <td align="right">6069.25</td>
 <td align="right">6161.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -4368,10 +4403,10 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess27</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4559.73</td>
-<td align="right">352.01</td>
+<td align="right">4563.17</td>
+<td align="right">348.92</td>
 <td align="right">0.00</td>
-<td align="right">4561.00</td>
+<td align="right">4562.75</td>
 <td align="right">4587.50</td>
 <td align="right">4609.00</td>
 <td align="right">4710.00</td>
@@ -4394,8 +4429,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess29</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">19.99</td>
-<td align="right">1.65</td>
+<td align="right">20.01</td>
+<td align="right">1.64</td>
 <td align="right">0.00</td>
 <td align="right">19.70</td>
 <td align="right">19.90</td>
@@ -4420,11 +4455,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess31</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">70.13</td>
-<td align="right">5.53</td>
+<td align="right">70.18</td>
+<td align="right">5.48</td>
 <td align="right">0.00</td>
 <td align="right">70.10</td>
-<td align="right">70.75</td>
+<td align="right">70.80</td>
 <td align="right">71.40</td>
 <td align="right">72.50</td>
 <td align="left">▁▁▁▁▇</td>
@@ -4453,7 +4488,7 @@ Chunk | Output</strong></mark>
 <td align="right">64.00</td>
 <td align="right">65.00</td>
 <td align="right">70.00</td>
-<td align="left">▁▃▇▅▁</td>
+<td align="left">▁▃▇▆▁</td>
 </tr>
 <tr class="odd">
 <td align="left">ManufacturingProcess34</td>
@@ -4472,8 +4507,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess35</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">495.44</td>
-<td align="right">10.71</td>
+<td align="right">495.50</td>
+<td align="right">10.68</td>
 <td align="right">463.00</td>
 <td align="right">490.00</td>
 <td align="right">495.00</td>
@@ -10144,8 +10179,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess02</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">16.70</td>
-<td align="right">8.43</td>
+<td align="right">16.69</td>
+<td align="right">8.44</td>
 <td align="right">0.00</td>
 <td align="right">19.23</td>
 <td align="right">21.00</td>
@@ -10170,10 +10205,10 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess04</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">931.83</td>
-<td align="right">6.26</td>
+<td align="right">931.82</td>
+<td align="right">6.27</td>
 <td align="right">911.00</td>
-<td align="right">928.00</td>
+<td align="right">927.75</td>
 <td align="right">934.00</td>
 <td align="right">936.00</td>
 <td align="right">946.00</td>
@@ -10183,12 +10218,12 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess05</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">1001.72</td>
-<td align="right">30.44</td>
+<td align="right">1001.83</td>
+<td align="right">30.49</td>
 <td align="right">923.00</td>
 <td align="right">986.82</td>
 <td align="right">999.35</td>
-<td align="right">1008.72</td>
+<td align="right">1009.20</td>
 <td align="right">1175.30</td>
 <td align="left">▁▇▁▁▁</td>
 </tr>
@@ -10253,7 +10288,7 @@ Chunk | Output</strong></mark>
 <td align="right">7.50</td>
 <td align="right">8.70</td>
 <td align="right">9.10</td>
-<td align="right">9.50</td>
+<td align="right">9.53</td>
 <td align="right">11.60</td>
 <td align="left">▂▇▆▂▁</td>
 </tr>
@@ -10262,7 +10297,7 @@ Chunk | Output</strong></mark>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">9.39</td>
-<td align="right">0.70</td>
+<td align="right">0.71</td>
 <td align="right">7.50</td>
 <td align="right">9.00</td>
 <td align="right">9.40</td>
@@ -10274,8 +10309,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess12</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">855.56</td>
-<td align="right">1779.67</td>
+<td align="right">853.19</td>
+<td align="right">1780.48</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
 <td align="right">0.00</td>
@@ -10300,8 +10335,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess14</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4853.26</td>
-<td align="right">54.96</td>
+<td align="right">4853.50</td>
+<td align="right">54.59</td>
 <td align="right">4701.00</td>
 <td align="right">4827.25</td>
 <td align="right">4855.50</td>
@@ -10418,7 +10453,7 @@ Chunk | Output</strong></mark>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">8.87</td>
-<td align="right">5.80</td>
+<td align="right">5.81</td>
 <td align="right">0.00</td>
 <td align="right">4.00</td>
 <td align="right">8.00</td>
@@ -10430,11 +10465,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess25</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4828.11</td>
-<td align="right">368.15</td>
+<td align="right">4828.73</td>
+<td align="right">368.12</td>
 <td align="right">0.00</td>
-<td align="right">4832.00</td>
-<td align="right">4854.00</td>
+<td align="right">4833.50</td>
+<td align="right">4854.41</td>
 <td align="right">4876.25</td>
 <td align="right">4990.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -10443,11 +10478,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess26</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">6012.70</td>
-<td align="right">460.67</td>
+<td align="right">6016.51</td>
+<td align="right">458.21</td>
 <td align="right">0.00</td>
-<td align="right">6019.75</td>
-<td align="right">6046.50</td>
+<td align="right">6020.75</td>
+<td align="right">6046.98</td>
 <td align="right">6069.25</td>
 <td align="right">6161.00</td>
 <td align="left">▁▁▁▁▇</td>
@@ -10456,10 +10491,10 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess27</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">4559.73</td>
-<td align="right">352.01</td>
+<td align="right">4563.17</td>
+<td align="right">348.92</td>
 <td align="right">0.00</td>
-<td align="right">4561.00</td>
+<td align="right">4562.75</td>
 <td align="right">4587.50</td>
 <td align="right">4609.00</td>
 <td align="right">4710.00</td>
@@ -10482,8 +10517,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess29</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">19.99</td>
-<td align="right">1.65</td>
+<td align="right">20.01</td>
+<td align="right">1.64</td>
 <td align="right">0.00</td>
 <td align="right">19.70</td>
 <td align="right">19.90</td>
@@ -10508,11 +10543,11 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess31</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">70.13</td>
-<td align="right">5.53</td>
+<td align="right">70.18</td>
+<td align="right">5.48</td>
 <td align="right">0.00</td>
 <td align="right">70.10</td>
-<td align="right">70.75</td>
+<td align="right">70.80</td>
 <td align="right">71.40</td>
 <td align="right">72.50</td>
 <td align="left">▁▁▁▁▇</td>
@@ -10541,7 +10576,7 @@ Chunk | Output</strong></mark>
 <td align="right">64.00</td>
 <td align="right">65.00</td>
 <td align="right">70.00</td>
-<td align="left">▁▃▇▅▁</td>
+<td align="left">▁▃▇▆▁</td>
 </tr>
 <tr class="odd">
 <td align="left">ManufacturingProcess34</td>
@@ -10560,8 +10595,8 @@ Chunk | Output</strong></mark>
 <td align="left">ManufacturingProcess35</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">495.44</td>
-<td align="right">10.71</td>
+<td align="right">495.50</td>
+<td align="right">10.68</td>
 <td align="right">463.00</td>
 <td align="right">490.00</td>
 <td align="right">495.00</td>
